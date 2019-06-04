@@ -1,0 +1,79 @@
+apiVersion: v1
+kind: Template
+metadata:
+  name: package-analyzer-buildconfig
+  annotations:
+    description: This is Thoth Core - Package Analyzer BuildConfig
+    openshift.io/display-name: "Thoth: Package Analyzer BuildConfig"
+    version: 0.3.0
+    tags: poc,thoth,ai-stacks,package-analyzer
+    template.openshift.io/documentation-url: https://github.com/Thoth-Station/
+    template.openshift.io/long-description: |-
+      This template defines resources needed to deploy Thoth Package
+      Analyzer as a Proof-of-Concept to OpenShift.
+    template.openshift.io/provider-display-name: Red Hat, Inc.
+  labels:
+    template: package-analyzer-buildconfig
+    app: thoth
+    component: package-analyzer
+
+objects:
+  - kind: BuildConfig
+    apiVersion: v1
+    metadata:
+      name: package-analyzer
+      labels:
+        app: thoth
+        component: package-analyzer
+    spec:
+      resources:
+        requests:
+          cpu: 2
+          memory: 768Mi
+        limits:
+          cpu: 2
+          memory: 1024Mi
+      output:
+        to:
+          kind: ImageStreamTag
+          name: "package-analyzer:${IMAGE_STREAM_TAG}"
+      source:
+        type: Git
+        git:
+          uri: "${GITHUB_URL}"
+          ref: "${GITHUB_REF}"
+      strategy:
+        type: Source
+        sourceStrategy:
+          from:
+            kind: ImageStreamTag
+            name: python-36-centos7:latest
+          env:
+            - name: ENABLE_PIPENV
+              value: "1"
+      triggers:
+        - imageChange: {}
+          type: ImageChange
+        - type: "Generic"
+          generic:
+            secretReference:
+              name: generic-webhook-secret
+
+parameters:
+  - description: Name of the github repository
+    displayName: Git Repository
+    required: true
+    name: GITHUB_URL
+    value: 'https://github.com/thoth-station/package-analyzer'
+
+  - description: Git reference to be used
+    displayName: Git Reference
+    required: true
+    name: GITHUB_REF
+    value: 'master'
+
+  - description: Tag of the output ImageStream the resulting container image should go to
+    displayName: ImageStream Tag
+    required: true
+    name: IMAGE_STREAM_TAG
+    value: 'latest'

@@ -1,0 +1,113 @@
+apiVersion: v1
+kind: Template
+metadata:
+  name: package-analyzer
+  annotations:
+    description: "Thoth: Package Analyzer Template"
+    openshift.io/display-name: "Thoth: Package Analyzer Template"
+    version: 0.4.0
+    tags: thoth,ai-stacks,aistacks,package-analyzer
+    template.openshift.io/documentation-url: https://github.com/Thoth-Station/
+    template.openshift.io/long-description: >
+      This template defines resources needed to run package analyzer in Thoth to OpenShift, it is used
+      to create new OpenShift Jobs running the package analyzer.
+    template.openshift.io/provider-display-name: Red Hat, Inc.
+  labels:
+    template: package-analyzer
+    app: thoth
+    component: package-analyzer
+
+objects:
+  - apiVersion: batch/v1
+    kind: Job
+    metadata:
+      name: package-analyzer
+      labels:
+        app: thoth
+        component: package-analyzer
+        operator: graph-sync
+        task: package-analyzer
+        mark: cleanup
+    spec:
+      backoffLimit: 0
+      template:
+        metadata:
+          labels:
+            app: thoth
+            component: package-analyzer
+        spec:
+          restartPolicy: Never
+          automountServiceAccountToken: false
+          containers:
+            - name: package-analyzer
+              image: "${THOTH_REGISTRY}/${IMAGE_STREAM_PROJECT_NAME}/package-analyzer"
+              livenessProbe:
+                # Give package analyzer 30 minutes to compute results, kill it if it was not able result anything.
+                tcpSocket:
+                  port: 80
+                initialDelaySeconds: 1800
+                failureThreshold: 1
+                periodSeconds: 10
+              env:
+                - name: THOTH_PACKAGE_ANALYZER_SUBCOMMAND
+                  value: "python"
+                - name: THOTH_PACKAGE_ANALYZER_DEBUG
+                  value: "${THOTH_PACKAGE_ANALYZER_DEBUG}"
+                - name: THOTH_PACKAGE_ANALYZER_PACKAGE_NAME
+                  value: "${THOTH_PACKAGE_ANALYZER_PACKAGE_NAME}"
+                - name: THOTH_PACKAGE_ANALYZER_PACKAGE_VERSION
+                  value: "${THOTH_PACKAGE_ANALYZER_PACKAGE_VERSION}"
+                - name: THOTH_PACKAGE_ANALYZER_INDEX_URL
+                  value: "${THOTH_PACKAGE_ANALYZER_INDEX_URL}"
+                - name: THOTH_PACKAGE_ANALYZER_OUTPUT
+                  value: "${THOTH_PACKAGE_ANALYZER_OUTPUT}"
+                - name: SENTRY_DSN
+                  valueFrom:
+                    secretKeyRef:
+                      key: sentry-dsn
+                      name: thoth
+              resources:
+                limits:
+                  memory: '2Gi'
+                  cpu: '1000m'
+                requests:
+                  memory: '2Gi'
+                  cpu: '1000m'
+
+parameters:
+  - name: THOTH_PACKAGE_ANALYZER_JOB_ID
+    description: A job id for package analyzer job.
+    displayName: Job identifier
+    required: true
+  - name: THOTH_PACKAGE_ANALYZER_DEBUG
+    displayName: Package Analyzer Verbose
+    description: Run the given package analyzer in a verbose mode so developers can debug
+    required: false
+    value: "false"
+  - name: THOTH_PACKAGE_ANALYZER_PACKAGE_NAME
+    displayName: Package name
+    description: Package name which should be analyzed.
+    required: true
+  - name: THOTH_PACKAGE_ANALYZER_PACKAGE_VERSION
+    displayName: Package version
+    description: Package version which should be analyzed.
+    required: true
+  - name: THOTH_PACKAGE_ANALYZER_INDEX_URL
+    displayName: Python package indexes
+    description: A comma separated list of Python package indexes (package sources) to analyze packages from.
+    required: true
+    value: "https://pypi.org/simple"
+  - name: THOTH_REGISTRY
+    description: Registry server from where Image is to be pulled
+    displayName: Registry
+    required: true
+    value: "docker-registry.default.svc:5000"
+  - name: IMAGE_STREAM_PROJECT_NAME
+    description: Project where ImageStream is present
+    displayName: ImageStream Project
+    required: true
+    value: "thoth-test-core"
+  - name: THOTH_PACKAGE_ANALYZER_OUTPUT
+    description: Remote where results should be send to
+    displayName: Analyzer output
+    required: true

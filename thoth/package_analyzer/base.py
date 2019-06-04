@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# thoth-digests-fetcher
+# thoth-package-analyzer
 # Copyright(C) 2019 Fridolin Pokorny
 #
 # This program is free software: you can redistribute it and / or modify

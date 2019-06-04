@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# thoth-digests-fetcher
-# Copyright(C) 2019 Fridolin Pokorny
+# thoth-package-analyzer
+# Copyright(C) 2019 Fridolin Pokorny, Bissenbay Dauletbayev
 #
 # This program is free software: you can redistribute it and / or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,16 +15,16 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-"""A command line interface for Python digests fetcher used in project Thoth."""
+"""A command line interface for Python package analyzer used in project Thoth."""
 
 import logging
 
 import click
 from thoth.common import init_logging
 from thoth.analyzer import print_command_result
-from thoth.digests_fetcher import __version__ as analyzer_version
-from thoth.digests_fetcher import __title__ as analyzer_name
-from thoth.digests_fetcher.python import PythonDigestsFetcher
+from thoth.package_analyzer import __version__ as analyzer_version
+from thoth.package_analyzer import __title__ as analyzer_name
+from thoth.package_analyzer.python import PythonDigestsFetcher
 
 
 init_logging()
@@ -32,7 +32,7 @@ _LOGGER = logging.getLogger(__name__)
 
 
 def _print_version(ctx, _, value):
-    """Print digests-fetcher version and exit."""
+    """Print package-analyzer version and exit."""
     if not value or ctx.resilient_parsing:
         return
     click.echo(analyzer_version)
@@ -42,7 +42,11 @@ def _print_version(ctx, _, value):
 @click.group()
 @click.pass_context
 @click.option(
-    "-v", "--verbose", is_flag=True, envvar="THOTH_DIGESTS_FETCHER_DEBUG", help="Be verbose about what's going on."
+    "-v",
+    "--verbose",
+    is_flag=True,
+    envvar="THOTH_PACKAGE_ANALYZER_DEBUG",
+    help="Be verbose about what's going on.",
 )
 @click.option(
     "--version",
@@ -50,12 +54,12 @@ def _print_version(ctx, _, value):
     is_eager=True,
     callback=_print_version,
     expose_value=False,
-    help="Print digests fetcher version and exit.",
+    help="Print package analyzer version and exit.",
 )
 def cli(ctx=None, verbose=False):
-    """Thoth digests-fetcher command line interface."""
+    """Thoth package-analyzer command line interface."""
     if ctx:
-        ctx.auto_envvar_prefix = "THOTH_DIGESTS_FETCHER"
+        ctx.auto_envvar_prefix = "THOTH_PACKAGE_ANALYZER"
 
     if verbose:
         _LOGGER.setLevel(logging.DEBUG)
@@ -71,16 +75,16 @@ def cli(ctx=None, verbose=False):
     "-p",
     type=str,
     required=True,
-    envvar="THOTH_DIGESTS_FETCHER_PACKAGE_NAME",
-    help="Package name for which digests should be fetcher.",
+    envvar="THOTH_PACKAGE_ANALYZER_PACKAGE_NAME",
+    help="Package name for which digests should be fetched.",
 )
 @click.option(
     "--package-version",
     "-v",
     type=str,
     required=True,
-    envvar="THOTH_DIGESTS_FETCHER_PACKAGE_VERSION",
-    help="Package name for which digests should be fetcher.",
+    envvar="THOTH_PACKAGE_ANALYZER_PACKAGE_VERSION",
+    help="Package version for which digests should be fetched.",
 )
 @click.option(
     "--index-url",
@@ -89,10 +93,18 @@ def cli(ctx=None, verbose=False):
     required=False,
     default="https://pypi.org/simple",
     show_default=True,
-    envvar="THOTH_DIGESTS_FETCHER_INDEX_URL",
+    envvar="THOTH_PACKAGE_ANALYZER_INDEX_URL",
     help="URL of the Python package index to pull the package from.",
 )
 @click.option("--no-pretty", "-P", is_flag=True, help="Do not print results nicely.")
+@click.option(
+    "--output",
+    "-o",
+    type=str,
+    envvar="THOTH_PACKAGE_ANALYZER_OUTPUT",
+    default=None,
+    help="Output file or remote API to print results to, in case of URL a POST request is issued.",
+)
 def python(
     click_ctx,
     package_name: str,
@@ -111,7 +123,7 @@ def python(
         result,
         analyzer=analyzer_name,
         analyzer_version=analyzer_version,
-        output=output,
+        output=output or "-",
         pretty=not no_pretty,
     )
 
