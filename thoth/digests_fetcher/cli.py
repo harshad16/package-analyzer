@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # thoth-digests-fetcher
-# Copyright(C) 2019 ???
+# Copyright(C) 2019 Fridolin Pokorny
 #
 # This program is free software: you can redistribute it and / or modify
 # it under the terms of the GNU General Public License as published by
@@ -57,7 +57,7 @@ def _print_version(ctx, _, value):
     help="Print digests fetcher version and exit.",
 )
 def cli(ctx=None, verbose=False):
-    """Thoth's digests-fetcher command line interface."""
+    """Thoth digests-fetcher command line interface."""
     if ctx:
         ctx.auto_envvar_prefix = "THOTH_DIGESTS_FETCHER"
 
