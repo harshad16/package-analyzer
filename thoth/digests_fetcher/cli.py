@@ -57,7 +57,7 @@ def _print_version(ctx, _, value):
     help="Print digests fetcher version and exit.",
 )
 def cli(ctx=None, verbose=False):
-    """Thoth's digests-fetcher command line interface."""
+    """Thoth digests-fetcher command line interface."""
     if ctx:
         ctx.auto_envvar_prefix = "THOTH_DIGESTS_FETCHER"
 
