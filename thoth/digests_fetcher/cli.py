@@ -42,11 +42,7 @@ def _print_version(ctx, _, value):
 @click.group()
 @click.pass_context
 @click.option(
-    "-v",
-    "--verbose",
-    is_flag=True,
-    envvar="THOTH_DIGESTS_FETCHER_DEBUG",
-    help="Be verbose about what's going on.",
+    "-v", "--verbose", is_flag=True, envvar="THOTH_DIGESTS_FETCHER_DEBUG", help="Be verbose about what's going on."
 )
 @click.option(
     "--version",
@@ -94,7 +90,7 @@ def cli(ctx=None, verbose=False):
     default="https://pypi.org/simple",
     show_default=True,
     envvar="THOTH_DIGESTS_FETCHER_INDEX_URL",
-    help="A comma separated list of Python package indexes (package sources) to gather digests from.",
+    help="URL of the Python package index to pull the package from.",
 )
 @click.option("--no-pretty", "-P", is_flag=True, help="Do not print results nicely.")
 def python(
@@ -107,9 +103,8 @@ def python(
 ):
     """Fetch digests for packages in Python ecosystem."""
     result = {}
-    for url in index_url.split(","):
-        python_fetcher = PythonDigestsFetcher(url)
-        result[url] = python_fetcher.fetch(package_name, package_version)
+    python_fetcher = PythonDigestsFetcher(index_url)
+    result[index_url] = python_fetcher.fetch(package_name, package_version)
 
     print_command_result(
         click_ctx,
