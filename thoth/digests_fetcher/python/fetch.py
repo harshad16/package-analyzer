@@ -35,16 +35,13 @@ class PythonDigestsFetcher(FetcherBase):
     def fetch(self, package_name: str, package_version: str) -> dict:
         """Fetch digests of files present in artifacts for the given package."""
         _LOGGER.info(
-            "Fetching digests for package %r in version %r from %r",
-            package_name,
-            package_version,
-            self.source.url,
+            "Fetching digests for package %r in version %r from %r", package_name, package_version, self.source.url
         )
 
-        # TODO: implement
+        # TODO: implement the real stuff
         return {
             "package_name": package_name,
             "package_version": package_version,
-            "index_url": self.source.index.url,
+            "index_url": self.source.url,
             "files": [],
         }
