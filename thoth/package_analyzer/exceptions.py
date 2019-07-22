@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# thoth-digests-fetcher
+# thoth-package-analyzer
 # Copyright(C) 2019 Fridolin Pokorny
 #
 # This program is free software: you can redistribute it and / or modify
@@ -15,8 +15,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-"""Exceptions used inside and outside of digests-fetcher."""
+"""Exceptions used inside and outside of package-analyzer."""
 
 
 class DigestsFetcherException(Exception):
-    """A base class for exception hierarchy used in digests fetcher."""
+    """A base class for exception hierarchy used in package analyzer."""

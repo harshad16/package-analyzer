@@ -11,7 +11,7 @@ def get_install_requires():
 
 
 def get_version():
-    with open(os.path.join('thoth', 'digests_fetcher', '__init__.py')) as f:
+    with open(os.path.join('thoth', 'package_analyzer', '__init__.py')) as f:
         content = f.readlines()
 
     for line in content:
@@ -45,16 +45,16 @@ class Test(TestCommand):
 
 
 setup(
-    name='thoth-digests-fetcher',
+    name='thoth-package-analyzer',
     version=get_version(),
     description='Gather digests for artifacts in Python ecosystem.',
     long_description=read('README.rst'),
     author='Fridolin Pokorny',
     author_email='fridolin@redhat.com',
     license='GPLv3+',
-    packages=['thoth.digests_fetcher', 'thoth.digests_fetcher.python'],
+    packages=['thoth.package_analyzer', 'thoth.package_analyzer.python'],
     entry_points={
-        'console_scripts': ['thoth-digests-fetcher=thoth.digests_fetcher.cli:cli']
+        'console_scripts': ['thoth-package-analyzer=thoth.package_analyzer.cli:cli']
     },
     zip_safe=False,
     install_requires=get_install_requires(),
