@@ -21,7 +21,7 @@ objects:
   - apiVersion: batch/v1
     kind: Job
     metadata:
-      name: package-analyzer
+      name: "${THOTH_PACKAGE_ANALYZER_JOB_ID}"
       labels:
         app: thoth
         component: package-analyzer
@@ -93,8 +93,8 @@ parameters:
     description: Package version which should be analyzed.
     required: true
   - name: THOTH_PACKAGE_ANALYZER_INDEX_URL
-    displayName: Python package indexes
-    description: A comma separated list of Python package indexes (package sources) to analyze packages from.
+    displayName: Python package index
+    description: URL of the Python package index to pull the package from.
     required: true
     value: "https://pypi.org/simple"
   - name: THOTH_REGISTRY
