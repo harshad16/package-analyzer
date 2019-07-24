@@ -38,11 +38,11 @@ class PythonDigestsFetcher(FetcherBase):
             "Fetching digests for package %r in version %r from %r", package_name, package_version, self.source.url
         )
 
-        files = self.source.get_package_hashes(package_name, package_version, True)
+        artifacts = self.source.get_package_hashes(package_name, package_version, True)
 
         return {
             "package_name": package_name,
             "package_version": package_version,
             "index_url": self.source.url,
-            "files": files,
+            "artifacts": artifacts,
         }
