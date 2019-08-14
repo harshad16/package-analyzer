@@ -106,7 +106,7 @@ parameters:
     description: Project where ImageStream is present
     displayName: ImageStream Project
     required: true
-    value: "thoth-test-core"
+    value: "thoth-infra-stage"
   - name: THOTH_PACKAGE_ANALYZER_OUTPUT
     description: Remote where results should be send to
     displayName: Analyzer output
