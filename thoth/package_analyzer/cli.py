@@ -114,9 +114,8 @@ def python(
     output: str = None,
 ):
     """Fetch digests for packages in Python ecosystem."""
-    result = {}
     python_fetcher = PythonDigestsFetcher(index_url)
-    result[index_url] = python_fetcher.fetch(package_name, package_version)
+    result = python_fetcher.fetch(package_name, package_version)
 
     print_command_result(
         click_ctx,
