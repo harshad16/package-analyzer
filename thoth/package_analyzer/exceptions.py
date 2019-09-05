@@ -18,5 +18,5 @@
 """Exceptions used inside and outside of package-analyzer."""
 
 
-class DigestsFetcherException(Exception):
+class PackageAnalyzerException(Exception):
     """A base class for exception hierarchy used in package analyzer."""

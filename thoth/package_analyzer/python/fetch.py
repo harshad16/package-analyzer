@@ -21,6 +21,7 @@ import logging
 
 from thoth.python import Source
 from thoth.package_analyzer.base import FetcherBase
+from thoth.python.exceptions import NotFound
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -44,10 +45,10 @@ class PythonDigestsFetcher(FetcherBase):
 
         try:
             artifacts = self.source.get_package_hashes(package_name, package_version, True)
-        except Exception as e:
+        except NotFound as exc:
             error = True
-            error_message = str(e)
-            _LOGGER.exception(error_message)
+            error_message = str(exc)
+            _LOGGER.warning(error_message)
 
         return {
             "package_name": package_name,
