@@ -105,6 +105,14 @@ def cli(ctx=None, verbose=False):
     default=None,
     help="Output file or remote API to print results to, in case of URL a POST request is issued.",
 )
+@click.option(
+    "--dry-run",
+    "-d",
+    type=bool,
+    default=False,
+    show_default=True,
+    help="Schedule a package analyzer job, do not send output to result-API.",
+)
 def python(
     click_ctx,
     package_name: str,
@@ -112,6 +120,7 @@ def python(
     index_url: str = None,
     no_pretty: bool = True,
     output: str = None,
+    dry_run: bool,
 ):
     """Fetch digests for packages in Python ecosystem."""
     python_fetcher = PythonDigestsFetcher(index_url)
@@ -124,6 +133,7 @@ def python(
         analyzer_version=analyzer_version,
         output=output or "-",
         pretty=not no_pretty,
+        dry_run=dry_run,
     )
 
 
