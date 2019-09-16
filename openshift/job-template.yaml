@@ -111,3 +111,8 @@ parameters:
     description: Remote where results should be send to
     displayName: Analyzer output
     required: true
+  - name: THOTH_PACKAGE_ANALYZER_DRY_RUN
+    description: Schedule a package analyzer job, do not send output to result-API.
+    displayName: Dry-run
+    required: false
+    value: "false"
