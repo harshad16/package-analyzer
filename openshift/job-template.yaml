@@ -66,6 +66,11 @@ objects:
                     secretKeyRef:
                       key: sentry-dsn
                       name: thoth
+                - name: THOTH_DEPLOYMENT_NAME
+                  valueFrom:
+                    configMapKeyRef:
+                      key: storage-bucket-name
+                      name: thoth
               resources:
                 limits:
                   memory: '2Gi'
