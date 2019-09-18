@@ -120,7 +120,7 @@ def python(
     index_url: str = None,
     no_pretty: bool = True,
     output: str = None,
-    dry_run: bool,
+    dry_run: bool = False,
 ):
     """Fetch digests for packages in Python ecosystem."""
     python_fetcher = PythonDigestsFetcher(index_url)
