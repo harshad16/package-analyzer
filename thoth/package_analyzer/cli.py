@@ -124,10 +124,10 @@ def python(
     dry_run: bool = False,
 ):
     """Fetch digests for packages in Python ecosystem."""
-    start_time = time.time()
+    start_time = time.monotonic()
     python_fetcher = PythonDigestsFetcher(index_url)
     result = python_fetcher.fetch(package_name, package_version)
-    duration = start_time - time.time()
+    duration = start_time - time.monotonic()
 
     print_command_result(
         click_ctx,
