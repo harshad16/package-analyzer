@@ -127,7 +127,6 @@ def python(
     start_time = time.monotonic()
     python_fetcher = PythonDigestsFetcher(index_url)
     result = python_fetcher.fetch(package_name, package_version)
-    duration = start_time - time.monotonic()
 
     print_command_result(
         click_ctx,
@@ -135,7 +134,7 @@ def python(
         analyzer=analyzer_name,
         analyzer_version=analyzer_version,
         output=output or "-",
-        duration=duration,
+        duration=time.monotonic() - start_time,
         pretty=not no_pretty,
         dry_run=dry_run,
     )
