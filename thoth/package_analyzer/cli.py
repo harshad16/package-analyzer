@@ -18,6 +18,7 @@
 """A command line interface for Python package analyzer used in project Thoth."""
 
 import logging
+import time
 
 import click
 from thoth.common import init_logging
@@ -123,6 +124,7 @@ def python(
     dry_run: bool = False,
 ):
     """Fetch digests for packages in Python ecosystem."""
+    start_time = time.monotonic()
     python_fetcher = PythonDigestsFetcher(index_url)
     result = python_fetcher.fetch(package_name, package_version)
 
@@ -132,6 +134,7 @@ def python(
         analyzer=analyzer_name,
         analyzer_version=analyzer_version,
         output=output or "-",
+        duration=time.monotonic() - start_time,
         pretty=not no_pretty,
         dry_run=dry_run,
     )

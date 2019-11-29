@@ -12,6 +12,7 @@ metadata:
       This template defines resources needed to run package analyzer in Thoth to OpenShift, it is used
       to create new OpenShift Jobs running the package analyzer.
     template.openshift.io/provider-display-name: Red Hat, Inc.
+    thoth-station.ninja/template-version: 0.4.0
   labels:
     template: package-analyzer
     app: thoth
@@ -22,6 +23,8 @@ objects:
     kind: Job
     metadata:
       name: "${THOTH_PACKAGE_ANALYZER_JOB_ID}"
+      annotations:
+        thoth-station.ninja/template-version: 0.4.0
       labels:
         app: thoth
         component: package-analyzer
