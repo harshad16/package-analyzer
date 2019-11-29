@@ -56,6 +56,8 @@ objects:
                   value: "python"
                 - name: THOTH_PACKAGE_ANALYZER_DEBUG
                   value: "${THOTH_PACKAGE_ANALYZER_DEBUG}"
+                - name: THOTH_DOCUMENT_ID
+                  value: "${THOTH_DOCUMENT_ID}"
                 - name: THOTH_PACKAGE_ANALYZER_PACKAGE_NAME
                   value: "${THOTH_PACKAGE_ANALYZER_PACKAGE_NAME}"
                 - name: THOTH_PACKAGE_ANALYZER_PACKAGE_VERSION
@@ -86,6 +88,10 @@ parameters:
   - name: THOTH_PACKAGE_ANALYZER_JOB_ID
     description: A job id for package analyzer job.
     displayName: Job identifier
+    required: true
+  - name: THOTH_DOCUMENT_ID
+    description: "A unique identifier of the resulting document in a Thoth deployment."
+    displayName: "Document identifier"
     required: true
   - name: THOTH_PACKAGE_ANALYZER_DEBUG
     displayName: Package Analyzer Verbose
