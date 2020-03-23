@@ -1,22 +1,22 @@
 apiVersion: v1
 kind: Template
 metadata:
-  name: package-analyzer
+  name: package-analyzer-workload-operator
   annotations:
     description: "Thoth: Package Analyzer Template"
     openshift.io/display-name: "Thoth: Package Analyzer Template"
-    version: 0.4.0
+    version: 0.5.0
     tags: thoth,ai-stacks,aistacks,package-analyzer
     template.openshift.io/documentation-url: https://github.com/Thoth-Station/
     template.openshift.io/long-description: >
       This template defines resources needed to run package analyzer in Thoth to OpenShift, it is used
       to create new OpenShift Jobs running the package analyzer.
     template.openshift.io/provider-display-name: Red Hat, Inc.
-    thoth-station.ninja/template-version: 0.4.0
+    thoth-station.ninja/template-version: 0.5.0
   labels:
     template: package-analyzer
     app: thoth
-    component: package-analyzer
+    component: package-analyzer-workload-operator
 
 objects:
   - apiVersion: batch/v1
@@ -24,10 +24,10 @@ objects:
     metadata:
       name: "${THOTH_PACKAGE_ANALYZER_JOB_ID}"
       annotations:
-        thoth-station.ninja/template-version: 0.4.0
+        thoth-station.ninja/template-version: 0.5.0
       labels:
         app: thoth
-        component: package-analyzer
+        component: package-analyzer-workload-operator
         operator: graph-sync
         task: package-analyzer
         mark: cleanup
@@ -37,7 +37,7 @@ objects:
         metadata:
           labels:
             app: thoth
-            component: package-analyzer
+            component: package-analyzer-workload-operator
         spec:
           restartPolicy: Never
           automountServiceAccountToken: false
